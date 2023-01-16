@@ -1,8 +1,8 @@
 <template>
 <div class="main">
 
-    <form action="" v-on:submit="getWeather(e)">
-        <input type="text" placeholder="Enter the city name" @v-model="inputCity">
+    <form action="" @submit.prevent="getWeather()">
+        <input type="text" placeholder="Enter the city name" v-model="inputCity">
 
         <button type="submit">Submit</button>
     </form>
@@ -13,7 +13,8 @@
 </template>
 
 <script>
-import Weather from './components/Weather.vue'
+import Weather from './components/Weather.vue';
+import axios from 'axios';
 
 export default {
     name: 'App',
@@ -23,25 +24,28 @@ export default {
 
     data() {
         return {
+            inputCity: '',
             weatherData: []
         }
     },
 
     methods: {
 
-        getWeather(e) {
-            // e.preventDefault();
+        async getWeather() {
+            // event.preventDefault();
 
-            try {
-                const data = axios.get(`https://api.weatherapi.com/v1/current.json?key=ac66a8ffaa8e4d219fd120436231601&q=${this.city}&aqi=no`);
-                this.weatherData = data;
+            await axios.get(`https://api.weatherapi.com/v1/current.json?key=ac66a8ffaa8e4d219fd120436231601&q=${this.inputCity}&aqi=no`)
+                .then((res) => {
 
-                console.log('city ===>', this.city);
-                console.log('data ===>', this.weatherData);
+                    console.log('response ==>', res);
+                    this.weatherData = res.data;
 
-            } catch (error) {
-                console.log('error ===> ', error);
-            }
+                    console.log('city ===>', this.inputCity);
+                    console.log('data ===>', this.weatherData);
+                })
+                .catch((error) => {
+                    console.log('error ===> ', error);
+                })
         }
 
     }
