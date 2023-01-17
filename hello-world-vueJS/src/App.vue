@@ -7,7 +7,7 @@
         <button type="submit">Submit</button>
     </form>
 
-    <!-- <Weather :city="`${inputCity}`" /> -->
+    <Weather :data="weatherData" />
 
 </div>
 </template>
@@ -15,13 +15,18 @@
 <script>
 import Weather from './components/Weather.vue';
 import axios from 'axios';
+import {
+    onMounted
+} from "vue";
 
 export default {
     name: 'App',
     components: {
         Weather
     },
-
+    mounted() {
+        console.log('onMounted');
+    },
     data() {
         return {
             inputCity: '',
@@ -34,7 +39,7 @@ export default {
         async getWeather() {
             // event.preventDefault();
 
-            await axios.get(`https://api.weatherapi.com/v1/current.json?key=ac66a8ffaa8e4d219fd120436231601&q=${this.inputCity}&aqi=no`)
+            await axios.get(`https://api.weatherapi.com/v1/current.json?key=bf30ea59efc941f5bf055856231701&q=${this.inputCity}&aqi=no`)
                 .then((res) => {
 
                     console.log('response ==>', res);
