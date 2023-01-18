@@ -1,5 +1,5 @@
 import { createApp } from "vue";
-import { mutations, actions, getters, createStore } from "vuex";
+import { createStore } from "vuex";
 import axios from "axios";
 import App from "./App.vue";
 
@@ -8,24 +8,26 @@ const store = createStore({
     return {
       a: 0,
       data: "",
+     
     };
   },
 
   mutations: {
-    increment(state) {
-      ++state.a;
+    increment(state , payload) {
+      state.a += payload;
     },
+
     setData(state, d) {
       state.data = d;
     },
   },
   actions: {
-    async callApi(context) {
+    async callApi(context , city) {
       let response = await axios.get(
-        "https://api.weatherapi.com/v1/current.json?key=bf30ea59efc941f5bf055856231701&q=karachi&aqi=no"
+        `https://api.weatherapi.com/v1/current.json?key=bf30ea59efc941f5bf055856231701&q=${city}&aqi=no`
       );
 
-      context.commit();
+      context.commit("setData", response.data);
     },
   },
 });
